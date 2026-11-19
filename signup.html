@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ABES Flix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding: 20px 48px;
+            z-index: 10;
+        }
+
+        .brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            color: #E50914;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .page-bg {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: radial-gradient(ellipse at top, rgba(229,9,20,0.06) 0%, transparent 50%),
+                        #000;
+        }
+
+        .card {
+            background: rgba(0,0,0,0.78);
+            border-radius: 8px;
+            padding: 56px 64px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .step-indicator {
+            font-size: 13px;
+            color: #737373;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .card h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card .subtitle {
+            color: #737373;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 20px 16px 8px;
+            background: #333;
+            border: 1.5px solid transparent;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #E50914;
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8c8c8c;
+            font-size: 15px;
+            pointer-events: none;
+            transition: all 0.15s ease;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: 10px;
+            transform: translateY(0);
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+            padding-left: 2px;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 56px;
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #8c8c8c;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .toggle-pass:hover { color: #fff; }
+
+        .error-msg {
+            background: rgba(229,9,20,0.15);
+            color: #E87C03;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #E50914;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover { background: #c40812; }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .footer-link {
+            margin-top: 28px;
+            font-size: 15px;
+            color: #737373;
+        }
+
+        .footer-link a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-link a:hover { text-decoration: underline; }
+
+        .strength-bar {
+            height: 3px;
+            border-radius: 2px;
+            margin-top: 6px;
+            background: #333;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s, background 0.3s;
+            width: 0;
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 16px 20px; }
+            .brand { font-size: 28px; }
+            .card { padding: 40px 28px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="brand">ABES FLIX</a>
+    </nav>
+
+    <div class="page-bg">
+        <div class="card">
+            <div class="step-indicator">Step 1 of 1</div>
+            <h1>Create your account</h1>
+            <p class="subtitle">Just a few more steps and you're in.</p>
+
+            <div class="error-msg" id="errorMsg"></div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <input type="text" id="fullName" required placeholder=" " autocomplete="name">
+                    <label for="fullName">Full name</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" required placeholder=" " autocomplete="email">
+                    <label for="email">Email address</label>
+                </div>
+                <div class="form-group">
+                    <div class="password-wrapper">
+                        <input type="password" id="password" required placeholder=" " autocomplete="new-password" minlength="8" oninput="updateStrength(this.value)">
+                        <label for="password">Password</label>
+                        <button type="button" class="toggle-pass" onclick="togglePassword('password', this)">SHOW</button>
+                    </div>
+                    <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                    <div class="hint">Use 8 or more characters</div>
+                </div>
+                <div class="form-group">
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" required placeholder=" " autocomplete="new-password">
+                        <label for="confirmPassword">Confirm password</label>
+                        <button type="button" class="toggle-pass" onclick="togglePassword('confirmPassword', this)">SHOW</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit" id="submitBtn">Sign Up</button>
+            </form>
+
+            <div class="footer-link">
+                Already a member? <a href="login.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(id, btn) {
+            var input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = 'HIDE';
+            } else {
+                input.type = 'password';
+                btn.textContent = 'SHOW';
+            }
+        }
+
+        function updateStrength(val) {
+            var fill = document.getElementById('strengthFill');
+            var score = 0;
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+
+            var widths = ['0%', '25%', '50%', '75%', '100%'];
+            var colors = ['#333', '#E50914', '#E87C03', '#ffd700', '#34A853'];
+            fill.style.width = widths[score];
+            fill.style.background = colors[score];
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('submitBtn');
+            var errorEl = document.getElementById('errorMsg');
+            errorEl.style.display = 'none';
+
+            var fullName = document.getElementById('fullName').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!fullName || !email || !password || !confirmPassword) {
+                errorEl.textContent = 'Please complete all fields.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (password.length < 8) {
+                errorEl.textContent = 'Your password needs to be at least 8 characters.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorEl.textContent = 'The passwords you entered do not match.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+
+            try {
+                var res = await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName: fullName, email: email, password: password })
+                });
+
+                var data = await res.json();
+
+                if (!res.ok) {
+                    errorEl.textContent = data.error || 'Registration failed.';
+                    errorEl.style.display = 'block';
+                    btn.disabled = false;
+                    btn.textContent = 'Sign Up';
+                    return;
+                }
+
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = 'home.html';
+            } catch (err) {
+                errorEl.textContent = 'Connection failed. Please try again.';
+                errorEl.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Sign Up';
+            }
+        });
+
+        if (localStorage.getItem('token')) {
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

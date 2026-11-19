@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABES Flix - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #141414;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 64px;
+            padding: 0 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            background: transparent;
+            transition: background 0.3s;
+        }
+
+        nav.scrolled {
+            background: rgba(20,20,20,0.97);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            color: #E50914;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #B3B3B3;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .user-name {
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .btn-signout {
+            padding: 6px 16px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-signout:hover {
+            border-color: #E50914;
+            color: #E50914;
+        }
+
+        .billboard {
+            width: 100%;
+            height: 580px;
+            position: relative;
+            background: linear-gradient(135deg, #1a0a0a 0%, #141414 50%, #0a0a1a 100%);
+            overflow: hidden;
+        }
+
+        .billboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 25% 40%, rgba(229,9,20,0.1), transparent 60%);
+        }
+
+        .billboard::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 220px;
+            background: linear-gradient(to top, #141414, transparent);
+        }
+
+        .billboard-info {
+            position: absolute;
+            bottom: 80px;
+            left: 48px;
+            z-index: 2;
+            max-width: 500px;
+        }
+
+        .billboard-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #E50914;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .billboard-info h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 14px;
+        }
+
+        .billboard-info p {
+            font-size: 15px;
+            color: #B3B3B3;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .billboard-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .billboard-buttons button {
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-play {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-play:hover { background: #e0e0e0; }
+
+        .btn-play svg {
+            width: 18px;
+            height: 18px;
+            fill: #000;
+        }
+
+        .btn-info {
+            background: rgba(109,109,110,0.7);
+            color: #fff;
+        }
+
+        .btn-info:hover { background: rgba(109,109,110,0.5); }
+
+        .content-section {
+            padding: 24px 48px 0;
+        }
+
+        .row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .row-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .content-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 32px;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        .content-row::-webkit-scrollbar { display: none; }
+
+        .card {
+            min-width: 220px;
+            height: 130px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease 0.1s;
+            flex-shrink: 0;
+        }
+
+        .card:hover {
+            transform: scale(1.15);
+            z-index: 10;
+        }
+
+        .card-bg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 10px 12px;
+        }
+
+        .card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-overlay .title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-overlay .meta {
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        .card-overlay .controls {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .card-overlay .ctrl-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .card-overlay .ctrl-btn svg {
+            width: 12px;
+            height: 12px;
+            fill: #fff;
+        }
+
+        .card-overlay .ctrl-btn:first-child {
+            border-color: #fff;
+            background: #fff;
+        }
+
+        .card-overlay .ctrl-btn:first-child svg {
+            fill: #000;
+            margin-left: 1px;
+        }
+
+        .originals .card {
+            min-width: 160px;
+            height: 230px;
+        }
+
+        .spacer { height: 40px; }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .billboard { height: 420px; }
+            .billboard-info { left: 20px; bottom: 50px; }
+            .billboard-info h1 { font-size: 32px; }
+            .content-section { padding: 16px 20px 0; }
+            .card { min-width: 140px; height: 85px; }
+            .originals .card { min-width: 120px; height: 170px; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-left">
+            <a href="home.html" class="brand">ABES FLIX</a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Series</a></li>
+                <li><a href="#">Films</a></li>
+                <li><a href="#">New & Popular</a></li>
+                <li><a href="#">My List</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <span class="user-name" id="userName"></span>
+            <button class="btn-signout" onclick="signOut()">Sign Out</button>
+        </div>
+    </nav>
+
+    <div class="billboard">
+        <div class="billboard-info">
+            <div class="billboard-tag">ABES FLIX ORIGINAL</div>
+            <h1>The Iron Verdict</h1>
+            <p>A disgraced attorney takes on one last case that could bring down the most powerful firm in the country. But the deeper she digs, the more dangerous the truth becomes.</p>
+            <div class="billboard-buttons">
+                <button class="btn-play">
+                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                    Play
+                </button>
+                <button class="btn-info">More Info</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="contentArea"></div>
+    <div class="spacer"></div>
+
+    <script>
+        var token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        fetch('/api/me', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        }).then(function(res) {
+            if (!res.ok) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+                return;
+            }
+            return res.json();
+        }).then(function(data) {
+            if (data) {
+                document.getElementById('userName').textContent = data.fullName;
+                var cwRow = document.querySelector('.row-title');
+                if (cwRow && cwRow.textContent.indexOf('[name]') !== -1) {
+                    cwRow.textContent = cwRow.textContent.replace('[name]', data.fullName);
+                }
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            var nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        function signOut() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        var gradients = [
+            'linear-gradient(135deg, #2c1320, #1a0a14)',
+            'linear-gradient(135deg, #132c20, #0a1a14)',
+            'linear-gradient(135deg, #20132c, #140a1a)',
+            'linear-gradient(135deg, #2c2013, #1a140a)',
+            'linear-gradient(135deg, #132028, #0a1418)',
+            'linear-gradient(135deg, #28201a, #1a1510)',
+            'linear-gradient(135deg, #1a2830, #101820)',
+            'linear-gradient(135deg, #301a28, #201018)',
+            'linear-gradient(135deg, #283018, #182010)',
+            'linear-gradient(135deg, #18282c, #10181a)',
+            'linear-gradient(135deg, #2c1828, #1a1018)',
+            'linear-gradient(135deg, #282c18, #181a10)',
+            'linear-gradient(135deg, #1a1830, #100f20)',
+            'linear-gradient(135deg, #301a1a, #200f0f)',
+            'linear-gradient(135deg, #1a301a, #0f200f)'
+        ];
+
+        var genres = ['Drama', 'Thriller', 'Sci-Fi', 'Action', 'Mystery', 'Crime', 'Romance', 'Comedy'];
+
+        var rows = [
+            {
+                title: 'Continue Watching',
+                items: ['Neon Shadows', 'Crimson Tide', 'The Glass Tower', 'Whisper Network', 'Parallel Lives', 'Beyond the Veil'],
+                originals: false
+            },
+            {
+                title: 'Trending Now',
+                items: ['Fractured Light', 'Stone Cold Justice', 'The Architect', 'Dead Reckoning', 'Signal Lost', 'Wildfire Season', 'The Narrow Road', 'Zero Hour'],
+                originals: false
+            },
+            {
+                title: 'ABES Flix Originals',
+                items: ['The Iron Verdict', 'Ghost Protocol', 'Obsidian', 'The Turning Point', 'Blackwater', 'Sovereign', 'The Exchange'],
+                originals: true
+            },
+            {
+                title: 'Action Thrillers',
+                items: ['Rogue Agent', 'Blowback', 'High Ground', 'Point of No Return', 'Kill Switch', 'Dark Asset', 'Trigger Warning', 'Hard Target'],
+                originals: false
+            },
+            {
+                title: 'Critically Acclaimed',
+                items: ['The Weight of Water', 'Still Life', 'Inheritance', 'The Quiet Ones', 'A Thousand Cuts', 'Peripheral Vision'],
+                originals: false
+            },
+            {
+                title: 'Documentaries',
+                items: ['Inside the Machine', 'Uncharted Depths', 'The Last Glacier', 'Breaking Ground', 'Coded Bias', 'The Algorithm'],
+                originals: false
+            }
+        ];
+
+        var container = document.getElementById('contentArea');
+
+        rows.forEach(function(row) {
+            var section = document.createElement('div');
+            section.className = 'content-section';
+            if (row.originals) section.classList.add('originals');
+
+            var header = document.createElement('div');
+            header.className = 'row-header';
+            var title = document.createElement('h2');
+            title.className = 'row-title';
+            title.textContent = row.title;
+            header.appendChild(title);
+            section.appendChild(header);
+
+            var rowDiv = document.createElement('div');
+            rowDiv.className = 'content-row';
+
+            row.items.forEach(function(name, i) {
+                var card = document.createElement('div');
+                card.className = 'card';
+
+                var bg = document.createElement('div');
+                bg.className = 'card-bg';
+                bg.style.background = gradients[(i + row.title.length) % gradients.length];
+
+                var overlay = document.createElement('div');
+                overlay.className = 'card-overlay';
+
+                var titleEl = document.createElement('div');
+                titleEl.className = 'title';
+                titleEl.textContent = name;
+
+                var meta = document.createElement('div');
+                meta.className = 'meta';
+                var year = 2020 + (i % 7);
+                var genre = genres[(i + row.title.length) % genres.length];
+                meta.textContent = year + ' - ' + genre;
+
+                var controls = document.createElement('div');
+                controls.className = 'controls';
+                controls.innerHTML = '<div class="ctrl-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>' +
+                    '<div class="ctrl-btn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke="#fff" stroke-width="2"/><line x1="5" y1="12" x2="19" y2="12" stroke="#fff" stroke-width="2"/></svg></div>';
+
+                overlay.appendChild(titleEl);
+                overlay.appendChild(meta);
+                overlay.appendChild(controls);
+
+                card.appendChild(bg);
+                card.appendChild(overlay);
+                rowDiv.appendChild(card);
+            });
+
+            section.appendChild(rowDiv);
+            container.appendChild(section);
+        });
+    </script>
+</body>
+</html>
